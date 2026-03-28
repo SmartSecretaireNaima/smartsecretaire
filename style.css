@@ -1,0 +1,456 @@
+/* =========================================================
+   STYLE GLOBAL
+   ========================================================= */
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #222;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* =========================================================
+   HEADER + MENU PREMIUM
+   ========================================================= */
+.top-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2b4c7e;
+    padding: 15px 25px;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+}
+
+.logo-icon {
+    font-size: 22px;
+    color: #2b4c7e;
+}
+
+body.dark-mode .logo-icon {
+    color: #8fb4ff;
+}
+
+.top-menu nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.top-menu nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.top-menu nav a:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* Bouton mode sombre */
+#darkMode {
+    background: white;
+    color: #2b4c7e;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#darkMode:hover {
+    background: #dfe8ff;
+}
+
+/* Mode sombre header */
+body.dark-mode .top-menu {
+    background: #111d33;
+}
+
+body.dark-mode .top-menu nav a:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+/* =========================================================
+   PAGE SYSTEM
+   ========================================================= */
+.page {
+    display: none;
+    padding: 40px 20px;
+    animation: fadeIn 0.4s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Animation douce */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   PAGE D’ACCUEIL PREMIUM
+   ========================================================= */
+.home-container {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.home-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2b4c7e;
+    margin-bottom: 10px;
+}
+
+.home-subtitle {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+.home-btn {
+    background: #2b4c7e;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.home-btn:hover {
+    background: #1f3a61;
+}
+
+.home-illustration {
+    width: 100%;
+    height: 180px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #2b4c7e, #4a6fa5);
+    border-radius: 12px;
+    opacity: 0.9;
+}
+
+/* Mode sombre accueil */
+body.dark-mode .home-title {
+    color: #8fb4ff;
+}
+
+body.dark-mode .home-subtitle {
+    color: #ccc;
+}
+
+body.dark-mode .home-btn {
+    background: #3a5a8e;
+}
+
+/* =========================================================
+   SECTION ASSISTANT
+   ========================================================= */
+#assistant {
+    padding: 20px;
+    text-align: center;
+}
+
+#userInput {
+    width: 80%;
+    height: 140px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    outline: none;
+    transition: 0.3s;
+}
+
+#userInput:focus {
+    border-color: #2b4c7e;
+    box-shadow: 0 0 5px rgba(43,76,126,0.4);
+}
+
+#send {
+    margin-top: 12px;
+    padding: 12px 25px;
+    font-size: 18px;
+    background: #2b4c7e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#send:hover {
+    background: #1f3a61;
+}
+
+/* =========================================================
+   ZONE DE RÉSULTAT
+   ========================================================= */
+#output {
+    margin: 25px;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    line-height: 1.6;
+    transition: 0.3s;
+}
+
+/* Mode sombre output */
+body.dark-mode #output {
+    background: #2a2a2a;
+    color: #e6e6e6;
+    box-shadow: 0 3px 10px rgba(255,255,255,0.05);
+}
+
+/* =========================================================
+   BOÎTES PREMIUM
+   ========================================================= */
+.document-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+body.dark-mode .document-box {
+    background: #182235;
+}
+
+/* Badge premium */
+.badge-premium {
+    display: inline-block;
+    background: #f5b400;
+    color: #222;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Liste de fonctionnalités */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.feature-item {
+    margin-bottom: 6px;
+    padding-left: 18px;
+    position: relative;
+}
+
+.feature-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #2b4c7e;
+}
+
+body.dark-mode .feature-item::before {
+    color: #8fb4ff;
+}
+
+/* =========================================================
+   FORMULAIRE DE CONTACT
+   ========================================================= */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.contact-form textarea {
+    min-height: 90px;
+}
+
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+    background: #111827;
+    border-color: #333;
+    color: #f5f5f5;
+}
+
+/* =========================================================
+   ENTREPRISE / COMPTA
+   ========================================================= */
+.entreprise-box,
+.compta-box {
+    background: #eef3ff;
+    border-left: 5px solid #2b4c7e;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.compta-total {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2b4c7e;
+}
+
+.compta-highlight {
+    background: #dfe8ff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+    background: #2b4c7e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    font-size: 14px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+body.dark-mode .footer {
+    background: #111d33;
+}
+
+/* =========================================================
+   LOADER (ANIMATION DE CHARGEMENT)
+   ========================================================= */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loader.hidden {
+    display: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ddd;
+    border-top-color: #2b4c7e;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 700px) {
+    .top-menu {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .top-menu nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .home-title {
+        font-size: 28px;
+    }
+
+    .home-subtitle {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    #userInput {
+        width: 100%;
+        height: 120px;
+        font-size: 15px;
+    }
+
+    #send {
+        width: 100%;
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    #output {
+        padding: 18px;
+        font-size: 15px;
+    }
+
+    .document-box {
+        padding: 15px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .home-title {
+        font-size: 22px;
+    }
+
+    .home-subtitle {
+        font-size: 15px;
+    }
+}

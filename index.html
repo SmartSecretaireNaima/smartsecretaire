@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SmartSecrétaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ============================
+         MENU PREMIUM
+    ============================= -->
+    <header class="top-menu">
+        <div class="logo">
+            <span class="logo-icon">✦</span> SmartSecrétaire
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#" data-page="home">Accueil</a></li>
+                <li><a href="#" data-page="assistant">Assistant</a></li>
+                <li><a href="#" data-page="premium">Premium</a></li>
+                <li><a href="#" data-page="entreprise">Entreprise</a></li>
+                <li><a href="#" data-page="contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <button id="darkMode">Mode sombre</button>
+    </header>
+
+
+    <!-- ============================
+         PAGE D’ACCUEIL PREMIUM (NOUVELLE VERSION)
+    ============================= -->
+    <section id="home" class="page active">
+        <div class="home-container">
+            <h1 class="home-title">Votre assistante administrative intelligente</h1>
+            <p class="home-subtitle">Automatisez vos documents, gagnez du temps, travaillez comme une pro.</p>
+
+            <button class="home-btn" data-page="assistant">Commencer</button>
+
+            <div class="home-illustration"></div>
+        </div>
+    </section>
+
+
+    <!-- ============================
+         PAGE ASSISTANT
+    ============================= -->
+    <section id="assistant" class="page">
+        <h2 class="section-title">Assistant intelligent</h2>
+
+        <textarea id="userInput" placeholder="Écrivez votre demande ici..."></textarea>
+        <button id="send">Générer</button>
+
+        <section id="output"></section>
+    </section>
+
+
+    <!-- ============================
+         PAGE PREMIUM
+    ============================= -->
+    <section id="premium" class="page">
+        <h2 class="section-title">Version Premium</h2>
+
+        <div class="document-box">
+            <span class="badge-premium">Premium</span>
+            <p>Accédez à des modèles avancés, des documents intelligents et des fonctionnalités exclusives.</p>
+
+            <h3 class="section-title">Ce que vous obtenez</h3>
+            <ul class="feature-list">
+                <li class="feature-item">Devis et factures premium intelligents</li>
+                <li class="feature-item">Modèles Word, Excel et rapports structurés</li>
+                <li class="feature-item">Calculs comptables automatiques</li>
+                <li class="feature-item">Mise en page professionnelle prête à envoyer</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- ============================
+         PAGE ENTREPRISE
+    ============================= -->
+    <section id="entreprise" class="page">
+        <h2 class="section-title">Solutions Entreprise</h2>
+
+        <div class="document-box">
+            <span class="badge-premium">Entreprise</span>
+            <p>SmartSecrétaire s’adapte aux besoins des équipes et des structures professionnelles.</p>
+
+            <h3 class="section-title">Fonctionnalités clés</h3>
+            <ul class="feature-list">
+                <li class="feature-item">Standardisation des documents administratifs</li>
+                <li class="feature-item">Automatisation des tâches répétitives</li>
+                <li class="feature-item">Gestion multi-utilisateurs</li>
+                <li class="feature-item">Historique des demandes et traçabilité</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- ============================
+         PAGE CONTACT
+    ============================= -->
+    <section id="contact" class="page">
+        <h2 class="section-title">Contact</h2>
+
+        <div class="document-box">
+            <span class="badge-premium">Contact</span>
+            <p>Pour toute question ou demande d’information, laissez-nous un message.</p>
+
+            <form class="contact-form">
+                <label>Nom</label>
+                <input type="text" placeholder="Votre nom">
+
+                <label>Email</label>
+                <input type="email" placeholder="Votre email">
+
+                <label>Message</label>
+                <textarea placeholder="Expliquez votre besoin..."></textarea>
+
+                <button type="button" class="home-btn">Envoyer</button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- ============================
+         FOOTER PREMIUM
+    ============================= -->
+    <footer class="footer">
+        <p>© 2026 SmartSecrétaire — Tous droits réservés</p>
+        <p class="footer-links">
+            <a href="#" data-page="contact">Contact</a> •
+            <a href="#" data-page="entreprise">Entreprise</a> •
+            <a href="#" data-page="premium">Premium</a>
+        </p>
+    </footer>
+
+
+    <!-- ============================
+         ANIMATION DE CHARGEMENT
+    ============================= -->
+    <div id="loader" class="loader hidden">
+        <div class="spinner"></div>
+        <p>Génération en cours...</p>
+    </div>
+
+
+    <!-- ============================
+         SCRIPTS
+    ============================= -->
+    <script src="script.js"></script>
+
+    <script>
+        // Navigation simple
+        const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
+        const pages = document.querySelectorAll(".page");
+
+        links.forEach(link => {
+            link.addEventListener("click", () => {
+                const target = link.getAttribute("data-page");
+
+                pages.forEach(p => p.classList.remove("active"));
+                document.getElementById(target).classList.add("active");
+
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Animation de chargement
+        const loader = document.getElementById("loader");
+        const sendBtn = document.getElementById("send");
+
+        sendBtn.addEventListener("click", () => {
+            loader.classList.remove("hidden");
+
+            setTimeout(() => {
+                loader.classList.add("hidden");
+            }, 1500);
+        });
+    </script>
+
+</body>
+</html>
