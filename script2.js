@@ -1,5 +1,5 @@
 // ======================================================
-//  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL
+//  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL CORRIGÉ
 // ======================================================
 
 
@@ -9,6 +9,7 @@
 const input = document.getElementById("userInput");
 const sendBtn = document.getElementById("send");
 const output = document.getElementById("output");
+const loader = document.getElementById("loader");
 
 sendBtn.addEventListener("click", () => {
     const demande = input.value.trim();
@@ -17,13 +18,19 @@ sendBtn.addEventListener("click", () => {
         return;
     }
 
-    const resultat = moteurInterne(demande);
-    output.innerHTML = `
-        <div class="document-box fade-in">
-            ${resultat}
-        </div>
-    `;
+    loader.classList.remove("hidden");
+
+    setTimeout(() => {
+        const resultat = moteurInterne(demande);
+        output.innerHTML = `
+            <div class="document-box fade-in">
+                ${resultat}
+            </div>
+        `;
+        loader.classList.add("hidden");
+    }, 1200);
 });
+
 
 // Mode sombre
 const darkBtn = document.getElementById("darkMode");
@@ -60,7 +67,7 @@ function analyserDemande(texte) {
 
 
 // ------------------------------------------------------
-// 3) MODÈLES SIMPLES (VERSION PREMIUM)
+// 3) MODÈLES SIMPLES
 // ------------------------------------------------------
 function modeleDevis() {
     return `
@@ -104,7 +111,35 @@ function modeleMARCO() {
 
 
 // ------------------------------------------------------
-// 4) MODÈLES PREMIUM INTELLIGENTS
+// 4) FONCTIONS MANQUANTES (AJOUTÉES)
+// ------------------------------------------------------
+function modeleWordPremium() {
+    return `
+        <span class="badge-premium">Word Premium</span>
+        <h2 class="section-title">Document Word Premium</h2>
+        <p>Modèle professionnel de document Word.</p>
+    `;
+}
+
+function tableauExcelAvance() {
+    return `
+        <span class="badge-premium">Excel Avancé</span>
+        <h2 class="section-title">Tableau Excel Avancé</h2>
+        <p>Tableau structuré avec formules avancées.</p>
+    `;
+}
+
+function messageMARCOAvance() {
+    return `
+        <span class="badge-premium">MARCO Avancé</span>
+        <h2 class="section-title">Message MARCO Avancé</h2>
+        <p>Message professionnel structuré selon la méthode MARCO avancée.</p>
+    `;
+}
+
+
+// ------------------------------------------------------
+// 5) MODÈLES PREMIUM INTELLIGENTS
 // ------------------------------------------------------
 function modeleDevisPremiumIntelligent(demande) {
     const info = analyserDemande(demande);
@@ -161,7 +196,7 @@ function modeleFacturePremiumIntelligent(demande) {
 
 
 // ------------------------------------------------------
-// 5) RAPPORT PREMIUM
+// 6) RAPPORT PREMIUM
 // ------------------------------------------------------
 function modeleRapportPremium() {
     return `
@@ -188,7 +223,7 @@ function modeleRapportPremium() {
 
 
 // ------------------------------------------------------
-// 6) EXCEL PREMIUM
+// 7) EXCEL PREMIUM
 // ------------------------------------------------------
 function modeleExcelPremium() {
     return `
@@ -209,7 +244,7 @@ Total général : =SOMME(D2:D4)
 
 
 // ------------------------------------------------------
-// 7) CALCUL COMPTABLE PREMIUM
+// 8) CALCUL COMPTABLE PREMIUM
 // ------------------------------------------------------
 function calculComptableAuto(demande) {
     const info = analyserDemande(demande);
@@ -231,7 +266,7 @@ function calculComptableAuto(demande) {
 
 
 // ------------------------------------------------------
-// 8) VERSION ENTREPRISE
+// 9) VERSION ENTREPRISE
 // ------------------------------------------------------
 function versionEntreprise() {
     return `
@@ -252,7 +287,7 @@ function versionEntreprise() {
 
 
 // ------------------------------------------------------
-// 9) MOTEUR INTERNE FINAL
+// 10) MOTEUR INTERNE FINAL CORRIGÉ
 // ------------------------------------------------------
 function moteurInterne(demande) {
     const d = demande.toLowerCase();
@@ -261,7 +296,6 @@ function moteurInterne(demande) {
 
     if (d.includes("word premium")) return modeleWordPremium();
     if (d.includes("excel avancé")) return tableauExcelAvance();
-    if (d.includes("calcul comptable")) return calculComptableAuto(demande);
     if (d.includes("marco avancé")) return messageMARCOAvance();
 
     if (d.includes("devis premium")) return modeleDevisPremiumIntelligent(demande);
@@ -276,18 +310,11 @@ function moteurInterne(demande) {
 
     if (d.includes("marco")) return modeleMARCO();
 
+    // Réponse par défaut intelligente
     return `
-        <h2 class="section-title">Demande non reconnue</h2>
-        <p>Je comprends votre demande, mais pouvez-vous préciser ce que vous souhaitez ?</p>
+        <h2 class="section-title">Réponse automatique</h2>
+        <p>Voici une réponse simple à votre demande :</p>
+        <p>${demande}</p>
     `;
 }
-const loader = document.getElementById("loader");
-const sendBtn = document.getElementById("send");
 
-sendBtn.addEventListener("click", () => {
-    loader.classList.remove("hidden");
-
-    setTimeout(() => {
-        loader.classList.add("hidden");
-    }, 1500); // durée du faux chargement
-});
