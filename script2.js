@@ -1,5 +1,5 @@
 // ======================================================
-//  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL CORRIGÉ
+//  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL OPTIMISÉ
 // ======================================================
 
 
@@ -101,17 +101,61 @@ function modeleExcel() {
     `;
 }
 
-function modeleMARCO() {
+
+// ------------------------------------------------------
+// 4) MARCO SIMPLE — VERSION AMÉLIORÉE
+// ------------------------------------------------------
+function modeleMARCO(demande) {
     return `
         <span class="badge-premium">MARCO</span>
         <h2 class="section-title">Message MARCO</h2>
-        <p>Message structuré selon la méthode MARCO.</p>
+
+        <h3 class="section-title">M — Message</h3>
+        <p>Bonjour, je vous contacte concernant ${demande}.</p>
+
+        <h3 class="section-title">A — Action</h3>
+        <p>Je souhaite vous informer de la situation actuelle.</p>
+
+        <h3 class="section-title">R — Raison</h3>
+        <p>Un imprévu nécessite un léger ajustement.</p>
+
+        <h3 class="section-title">C — Conséquence</h3>
+        <p>Le délai initial pourrait être modifié.</p>
+
+        <h3 class="section-title">O — Ouverture</h3>
+        <p>Je reste disponible pour toute précision.</p>
     `;
 }
 
 
 // ------------------------------------------------------
-// 4) FONCTIONS MANQUANTES (AJOUTÉES)
+// 5) MARCO AVANCÉ — VERSION PROFESSIONNELLE
+// ------------------------------------------------------
+function modeleMARCOAvance(demande) {
+    return `
+        <span class="badge-premium">MARCO Avancé</span>
+        <h2 class="section-title">Message MARCO Avancé</h2>
+
+        <h3 class="section-title">M — Message</h3>
+        <p>Bonjour, je vous contacte concernant ${demande}.</p>
+
+        <h3 class="section-title">A — Action</h3>
+        <p>Je souhaite vous informer de l’évolution précise de la situation.</p>
+
+        <h3 class="section-title">R — Raison</h3>
+        <p>Un élément imprévu a nécessité une réorganisation interne.</p>
+
+        <h3 class="section-title">C — Conséquence</h3>
+        <p>Le délai initial doit être ajusté afin de garantir un travail fiable et complet.</p>
+
+        <h3 class="section-title">O — Ouverture</h3>
+        <p>Je reste disponible pour échanger ou convenir d’un nouvel arrangement.</p>
+    `;
+}
+
+
+// ------------------------------------------------------
+// 6) AUTRES FONCTIONS PREMIUM
 // ------------------------------------------------------
 function modeleWordPremium() {
     return `
@@ -129,17 +173,9 @@ function tableauExcelAvance() {
     `;
 }
 
-function messageMARCOAvance() {
-    return `
-        <span class="badge-premium">MARCO Avancé</span>
-        <h2 class="section-title">Message MARCO Avancé</h2>
-        <p>Message professionnel structuré selon la méthode MARCO avancée.</p>
-    `;
-}
-
 
 // ------------------------------------------------------
-// 5) MODÈLES PREMIUM INTELLIGENTS
+// 7) MODÈLES PREMIUM INTELLIGENTS
 // ------------------------------------------------------
 function modeleDevisPremiumIntelligent(demande) {
     const info = analyserDemande(demande);
@@ -168,35 +204,9 @@ function modeleDevisPremiumIntelligent(demande) {
     `;
 }
 
-function modeleFacturePremiumIntelligent(demande) {
-    const info = analyserDemande(demande);
-    const client = info.client || "Nom du client";
-    const ht = info.montant || 200;
-    const tva = Math.round(ht * 0.20 * 100) / 100;
-    const ttc = Math.round((ht + tva) * 100) / 100;
-
-    return `
-        <span class="badge-premium">Facture Premium</span>
-        <h2 class="section-title">Facture Premium</h2>
-
-        <p><strong>Client :</strong> ${client}</p>
-        <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
-
-        <table class="table-premium">
-            <tr><th>Service</th><th>Montant</th></tr>
-            <tr><td>Service A</td><td>${Math.round(ht * 0.6)} €</td></tr>
-            <tr><td>Service B</td><td>${Math.round(ht * 0.4)} €</td></tr>
-        </table>
-
-        <p class="compta-total">Total HT : ${ht} €</p>
-        <p>TVA (20%) : ${tva} €</p>
-        <p class="compta-total">Total TTC : ${ttc} €</p>
-    `;
-}
-
 
 // ------------------------------------------------------
-// 6) RAPPORT PREMIUM
+// 8) RAPPORT PREMIUM
 // ------------------------------------------------------
 function modeleRapportPremium() {
     return `
@@ -223,7 +233,7 @@ function modeleRapportPremium() {
 
 
 // ------------------------------------------------------
-// 7) EXCEL PREMIUM
+// 9) EXCEL PREMIUM
 // ------------------------------------------------------
 function modeleExcelPremium() {
     return `
@@ -244,7 +254,7 @@ Total général : =SOMME(D2:D4)
 
 
 // ------------------------------------------------------
-// 8) CALCUL COMPTABLE PREMIUM
+// 10) CALCUL COMPTABLE PREMIUM
 // ------------------------------------------------------
 function calculComptableAuto(demande) {
     const info = analyserDemande(demande);
@@ -266,7 +276,7 @@ function calculComptableAuto(demande) {
 
 
 // ------------------------------------------------------
-// 9) VERSION ENTREPRISE
+// 11) VERSION ENTREPRISE
 // ------------------------------------------------------
 function versionEntreprise() {
     return `
@@ -287,7 +297,7 @@ function versionEntreprise() {
 
 
 // ------------------------------------------------------
-// 10) MOTEUR INTERNE FINAL CORRIGÉ
+// 12) MOTEUR INTERNE FINAL
 // ------------------------------------------------------
 function moteurInterne(demande) {
     const d = demande.toLowerCase();
@@ -296,7 +306,7 @@ function moteurInterne(demande) {
 
     if (d.includes("word premium")) return modeleWordPremium();
     if (d.includes("excel avancé")) return tableauExcelAvance();
-    if (d.includes("marco avancé")) return messageMARCOAvance();
+    if (d.includes("marco avancé")) return modeleMARCOAvance(demande);
 
     if (d.includes("devis premium")) return modeleDevisPremiumIntelligent(demande);
     if (d.includes("facture premium")) return modeleFacturePremiumIntelligent(demande);
@@ -308,9 +318,8 @@ function moteurInterne(demande) {
     if (d.includes("compte rendu")) return modeleCompteRendu();
     if (d.includes("excel") || d.includes("tableau")) return modeleExcel();
 
-    if (d.includes("marco")) return modeleMARCO();
+    if (d.includes("marco")) return modeleMARCO(demande);
 
-    // Réponse par défaut intelligente
     return `
         <h2 class="section-title">Réponse automatique</h2>
         <p>Voici une réponse simple à votre demande :</p>
