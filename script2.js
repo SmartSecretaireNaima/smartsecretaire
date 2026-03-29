@@ -106,50 +106,48 @@ function modeleExcel() {
 // 4) MARCO SIMPLE — VERSION AMÉLIORÉE
 // ------------------------------------------------------
 function modeleMARCO(demande) {
+
+    const M = `Bonjour, je vous contacte concernant ${demande}.`;
+    const A = `Je souhaite vous informer de la situation actuelle.`;
+    const R = `Un imprévu nécessite un léger ajustement.`;
+    const C = `Le délai initial pourrait être modifié.`;
+    const O = `Je reste disponible pour toute précision.`;
+
     return `
         <span class="badge-premium">MARCO</span>
-        <h2 class="section-title">Message MARCO</h2>
+        <h2 class="section-title">Message professionnel</h2>
 
-        <h3 class="section-title">M — Message</h3>
-        <p>Bonjour, je vous contacte concernant ${demande}.</p>
-
-        <h3 class="section-title">A — Action</h3>
-        <p>Je souhaite vous informer de la situation actuelle.</p>
-
-        <h3 class="section-title">R — Raison</h3>
-        <p>Un imprévu nécessite un léger ajustement.</p>
-
-        <h3 class="section-title">C — Conséquence</h3>
-        <p>Le délai initial pourrait être modifié.</p>
-
-        <h3 class="section-title">O — Ouverture</h3>
-        <p>Je reste disponible pour toute précision.</p>
+        <p>${M}</p>
+        <p>${A}</p>
+        <p>${R}</p>
+        <p>${C}</p>
+        <p>${O}</p>
     `;
 }
 
 
 // ------------------------------------------------------
-// 5) MARCO AVANCÉ — VERSION PROFESSIONNELLE
+// 5) MARCO AVANCÉ — VERSION PROFESSIONNELLE (CORRIGÉE)
 // ------------------------------------------------------
 function modeleMARCOAvance(demande) {
+
+    // Construction interne MARCO (pour toi)
+    const M = `Bonjour, je vous contacte concernant ${demande}.`;
+    const A = `Je souhaite vous informer de l’évolution précise de la situation.`;
+    const R = `Un élément imprévu a nécessité une réorganisation interne.`;
+    const C = `Le délai initial doit être ajusté afin de garantir un travail fiable et complet.`;
+    const O = `Je reste disponible pour échanger ou convenir d’un nouvel arrangement.`;
+
+    // Message final propre pour le client
     return `
         <span class="badge-premium">MARCO Avancé</span>
-        <h2 class="section-title">Message MARCO Avancé</h2>
+        <h2 class="section-title">Message professionnel</h2>
 
-        <h3 class="section-title">M — Message</h3>
-        <p>Bonjour, je vous contacte concernant ${demande}.</p>
-
-        <h3 class="section-title">A — Action</h3>
-        <p>Je souhaite vous informer de l’évolution précise de la situation.</p>
-
-        <h3 class="section-title">R — Raison</h3>
-        <p>Un élément imprévu a nécessité une réorganisation interne.</p>
-
-        <h3 class="section-title">C — Conséquence</h3>
-        <p>Le délai initial doit être ajusté afin de garantir un travail fiable et complet.</p>
-
-        <h3 class="section-title">O — Ouverture</h3>
-        <p>Je reste disponible pour échanger ou convenir d’un nouvel arrangement.</p>
+        <p>${M}</p>
+        <p>${A}</p>
+        <p>${R}</p>
+        <p>${C}</p>
+        <p>${O}</p>
     `;
 }
 
@@ -326,4 +324,3 @@ function moteurInterne(demande) {
         <p>${demande}</p>
     `;
 }
-
