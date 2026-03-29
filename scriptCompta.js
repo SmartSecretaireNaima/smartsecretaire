@@ -1,111 +1,107 @@
 // ======================================================
-// SMARTSECRÉTAIRE — SCRIPTCOMPTA.JS
+// SMARTCOMPTA — SCRIPT AUTOMATIQUE DE COMPTABILITÉ
 // ======================================================
 
-// ------------------------------------------------------
-// 1) Connexion avec l'Assistant pour détecter les demandes comptables
-// ------------------------------------------------------
-const input = document.getElementById("userInput");
-const output = document.getElementById("output");
-
-if (input) {
-    input.addEventListener("input", () => {
-        const texte = input.value.toLowerCase();
-
-        // Si le texte contient des mots-clés comptables, générer les tableaux
-        if (texte.includes("journal") || texte.includes("grand journal") || texte.includes("bilan") || texte.includes("résultat")) {
-            genererComptabilite();
-        }
-    });
+// Fonctions utilitaires
+function formatDateFR(date) {
+    return date.toLocaleDateString('fr-FR');
 }
 
-// ------------------------------------------------------
-// 2) Fonction principale pour générer la comptabilité
-// ------------------------------------------------------
-function genererComptabilite() {
-    // Exemple de données factices
-    const transactions = [
-        { date: "01/03/2026", compte: "Ventes", libelle: "Facture 001", debit: 0, credit: 1200 },
-        { date: "02/03/2026", compte: "Banque", libelle: "Encaissement", debit: 1200, credit: 0 },
-        { date: "05/03/2026", compte: "Fournisseurs", libelle: "Achat fournitures", debit: 300, credit: 0 },
-        { date: "06/03/2026", compte: "Banque", libelle: "Paiement fournisseur", debit: 0, credit: 300 }
-    ];
+function analyserTexteCompta(texte) {
+    const info = [];
+    const lignes = texte.split(/\n|\.|;/);
 
-    // Journal
-    const journalHTML = `
-        <h3>Journal</h3>
-        <table>
-            <tr><th>Date</th><th>Compte</th><th>Libellé</th><th>Débit</th><th>Crédit</th></tr>
-            ${transactions.map(t => `
-                <tr>
-                    <td>${t.date}</td>
-                    <td>${t.compte}</td>
-                    <td>${t.libelle}</td>
-                    <td>${t.debit} €</td>
-                    <td>${t.credit} €</td>
-                </tr>
-            `).join("")}
-        </table>
-    `;
-    document.getElementById("journalView").innerHTML = journalHTML;
+    lignes.forEach(ligne => {
+        const montantMatch = ligne.match(/(\d+[.,]?\d*)\s*€?/);
+        const clientMatch = ligne.match(/pour\s+([A-Za-zéèç]+)\s*/i);
+        const dateMatch = ligne.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
 
-    // Grand Journal (regroupé par compte)
-    const comptes = {};
-    transactions.forEach(t => {
-        if (!comptes[t.compte]) comptes[t.compte] = { debit: 0, credit: 0 };
-        comptes[t.compte].debit += t.debit;
-        comptes[t.compte].credit += t.credit;
+        if (montantMatch && clientMatch && dateMatch) {
+            info.push({
+                client: clientMatch[1],
+                montant: parseFloat(montantMatch[1].replace(",", ".")),
+                date: dateMatch[1]
+            });
+        }
     });
 
-    const grandJournalHTML = `
-        <h3>Grand Journal</h3>
-        <table>
-            <tr><th>Compte</th><th>Total Débit</th><th>Total Crédit</th></tr>
-            ${Object.keys(comptes).map(c => `
-                <tr>
-                    <td>${c}</td>
-                    <td>${comptes[c].debit} €</td>
-                    <td>${comptes[c].credit} €</td>
-                </tr>
-            `).join("")}
-        </table>
-    `;
-    document.getElementById("grandJournalView").innerHTML = grandJournalHTML;
+    return info;
+}
 
-    // Balance
-    const balanceHTML = `
-        <h3>Balance</h3>
-        <table>
-            <tr><th>Compte</th><th>Débit</th><th>Crédit</th></tr>
-            ${Object.keys(comptes).map(c => `
-                <tr>
-                    <td>${c}</td>
-                    <td>${comptes[c].debit} €</td>
-                    <td>${comptes[c].credit} €</td>
-                </tr>
-            `).join("")}
-        </table>
-    `;
-    document.getElementById("balanceView").innerHTML = balanceHTML;
+// Génération automatique des documents comptables
+function genererCompta(texte) {
+    const infos = analyserTexteCompta(texte);
 
-    // TVA (simple calcul sur ventes)
-    const tva = transactions.filter(t => t.compte === "Ventes").reduce((sum, t) => sum + t.credit * 0.20, 0);
-    document.getElementById("tvaView").innerHTML = `<h3>TVA (20%)</h3><p>${tva} €</p>`;
+    if (!infos.length) return "<p>Aucune information comptable détectée.</p>";
 
-    // Trésorerie (banque)
-    const banque = transactions.filter(t => t.compte === "Banque").reduce((sum, t) => sum + t.debit - t.credit, 0);
-    document.getElementById("tresorerieView").innerHTML = `<h3>Trésorerie</h3><p>${banque} €</p>`;
+    let journalHTML = "<h3>Journal</h3><table border='1'><tr><th>Date</th><th>Compte</th><th>Libellé</th><th>Débit</th><th>Crédit</th></tr>";
+    let grandJournalHTML = "<h3>Grand Journal</h3><table border='1'><tr><th>Compte</th><th>Total Débit</th><th>Total Crédit</th></tr>";
+    let balanceHTML = "<h3>Balance</h3><table border='1'><tr><th>Compte</th><th>Débit</th><th>Crédit</th></tr>";
+    let tvaHTML = "<h3>TVA (20%)</h3><ul>";
+    let tresorerieHTML = "<h3>Trésorerie</h3><ul>";
+    let bilanHTML = "<h3>Bilan</h3><ul>";
+    let resultatHTML = "<h3>Compte de Résultat</h3><ul>";
+    let relancesHTML = "<h3>Relances</h3><ul>";
 
-    // Bilan (actif/passif simple)
-    const actif = banque + transactions.filter(t => t.compte === "Fournisseurs").reduce((sum, t) => sum + t.debit - t.credit, 0);
-    const passif = transactions.filter(t => t.compte === "Ventes").reduce((sum, t) => sum + t.credit - t.debit, 0);
-    document.getElementById("bilanView").innerHTML = `<h3>Bilan</h3><p>Actif : ${actif} €, Passif : ${passif} €</p>`;
+    let totalVentes = 0;
+    let totalBanque = 0;
+    let totalTVA = 0;
 
-    // Compte de résultat
-    const resultat = transactions.filter(t => t.compte === "Ventes").reduce((sum, t) => sum + t.credit, 0)
-                    - transactions.filter(t => t.compte === "Fournisseurs").reduce((sum, t) => sum + t.debit, 0);
-    document.getElementById("resultatView").innerHTML = `<h3>Compte de résultat</h3><p>Résultat : ${resultat} €</p>`;
+    infos.forEach(item => {
+        const debit = 0;
+        const credit = item.montant;
+        const tva = Math.round(item.montant * 0.2 * 100) / 100;
 
-    // Relances (exemple)
-    document.getElementById("relancesView").innerHTML = `<h3>Relances</h3><p>Aucune relance nécessaire pour le moment.</p>`;
+        // Journal
+        journalHTML += `<tr><td>${item.date}</td><td>Ventes</td><td>Facture ${item.client}</td><td>${debit} €</td><td>${credit} €</td></tr>`;
+        journalHTML += `<tr><td>${formatDateFR(new Date())}</td><td>Banque</td><td>Encaissement ${item.client}</td><td>${credit} €</td><td>${debit} €</td></tr>`;
+
+        // Grand Journal
+        totalVentes += credit;
+        totalBanque += credit;
+        totalTVA += tva;
+
+        // TVA et trésorerie
+        tvaHTML += `<li>TVA sur ${item.client} : ${tva} €</li>`;
+        tresorerieHTML += `<li>Encaissement ${item.client} : ${credit} €</li>`;
+    });
+
+    grandJournalHTML += `<tr><td>Ventes</td><td>0 €</td><td>${totalVentes} €</td></tr>`;
+    grandJournalHTML += `<tr><td>Banque</td><td>${totalBanque} €</td><td>0 €</td></tr></table>`;
+
+    balanceHTML += `<tr><td>Ventes</td><td>0 €</td><td>${totalVentes} €</td></tr>`;
+    balanceHTML += `<tr><td>Banque</td><td>${totalBanque} €</td><td>0 €</td></tr></table>`;
+
+    tvaHTML += `</ul>`;
+    tresorerieHTML += `</ul>`;
+
+    bilanHTML += `<li>Actif : ${totalBanque} €</li><li>Passif : ${totalVentes} €</li></ul>`;
+    resultatHTML += `<li>Résultat : ${totalVentes} €</li></ul>`;
+    relancesHTML += `<li>Aucune relance nécessaire</li></ul>`;
+
+    return journalHTML + grandJournalHTML + balanceHTML + tvaHTML + tresorerieHTML + bilanHTML + resultatHTML + relancesHTML;
+}
+
+// Connexion à l’assistant
+const input = document.getElementById("userInput");
+const sendBtn = document.getElementById("send");
+const output = document.getElementById("output");
+const loader = document.getElementById("loader");
+
+if (sendBtn) {
+    sendBtn.addEventListener("click", () => {
+        const demande = input.value.trim();
+        if (demande === "") {
+            output.innerHTML = "<p>Merci d'écrire une demande.</p>";
+            return;
+        }
+
+        loader.classList.remove("hidden");
+
+        setTimeout(() => {
+            const resultat = genererCompta(demande);
+            output.innerHTML = `<div class="document-box fade-in">${resultat}</div>`;
+            loader.classList.add("hidden");
+        }, 1200);
+    });
 }
