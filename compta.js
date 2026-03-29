@@ -165,35 +165,29 @@ function logCompta(message) {
 // 1) ANALYSE DE LA DEMANDE (simple mais efficace)
 // ------------------------------------------------------
 function analyserOperation(demande) {
-    const d = demande.toLowerCase();
+    // Normalisation : minuscules + suppression des accents
+    let d = demande.toLowerCase();
+    d = d.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     const info = {
-        type: null,      // "achat" ou "vente"
-        montant: null,   // TTC
-        tva: 0.20,       // TVA par défaut
+        type: null,
+        montant: null,
+        tva: 0.20,
         date: todayISO()
     };
 
-    // -----------------------------
-    // 🔍 DÉTECTION TYPE D’OPÉRATION
-    // -----------------------------
-
-   // ACHAT
-if (
-    d.includes("achat") ||
-    d.includes("acheté") ||
-    d.includes("achete") ||
-    d.includes("j'ai acheté") ||
-    d.includes("j’ai acheté") ||   // apostrophe typographique
-    d.includes("payer") ||
-    d.includes("payé") ||
-    d.includes("materiel") ||
-    d.includes("matériel") ||
-    d.includes("facture fournisseur")
-) {
-    info.type = "achat";
-}
-
+    // ACHAT
+    if (
+        d.includes("achat") ||
+        d.includes("achete") ||
+        d.includes("jai achete") ||
+        d.includes("payer") ||
+        d.includes("paye") ||
+        d.includes("materiel") ||
+        d.includes("facture fournisseur")
+    ) {
+        info.type = "achat";
+    }
 
     // VENTE
     if (
@@ -205,6 +199,16 @@ if (
     ) {
         info.type = "vente";
     }
+
+    // MONTANT
+    const montantMatch = d.match(/(\d+[.,]?\d*)/);
+    if (montantMatch) {
+        info.montant = parseFloat(montantMatch[1].replace(",", "."));
+    }
+
+    return info;
+}
+
 
     // -----------------------------
     // 🔍 DÉTECTION MONTANT
