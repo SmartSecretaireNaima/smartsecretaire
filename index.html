@@ -1,16 +1,325 @@
-    <!-- ============================
-         SCRIPTS
-    ============================= -->
-    <script src="script.js"></script>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSecrétaire – Votre Assistante Intelligente</title>
 
-    <!-- ⭐ AJOUT : moteur comptable -->
+    <!-- ====== STYLE SOMBRE PREMIUM ====== -->
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #0b0f19;
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f1524;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e2a44;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+            color: #4da3ff;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            margin-left: 20px;
+            color: #c9d6ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #4da3ff;
+        }
+
+        .page {
+            display: none;
+            padding: 40px;
+            animation: fade 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h2 {
+            font-size: 40px;
+            color: #4da3ff;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #c9d6ff;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #4da3ff;
+            color: #0b0f19;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #77baff;
+        }
+
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #111827;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #1e2a44;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            border-color: #4da3ff;
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #4da3ff;
+            margin-top: 0;
+        }
+
+        /* SMARTCOMPTA PREMIUM */
+        .compta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .compta-card {
+            background: #111827;
+            border-radius: 10px;
+            border: 1px solid #1e2a44;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+        }
+
+        .compta-card h3 {
+            margin-top: 0;
+            color: #4da3ff;
+        }
+
+        .compta-section {
+            margin-top: 15px;
+            max-height: 260px;
+            overflow: auto;
+            font-size: 14px;
+        }
+
+        #comptaInput {
+            width: 100%;
+            min-height: 80px;
+            border-radius: 8px;
+            border: 1px solid #1e2a44;
+            background: #0f1524;
+            color: #e6e6e6;
+            padding: 10px;
+            resize: vertical;
+        }
+
+        #comptaInput:focus {
+            outline: none;
+            border-color: #4da3ff;
+        }
+
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .table-premium th,
+        .table-premium td {
+            border: 1px solid #1e2a44;
+            padding: 6px 8px;
+            text-align: right;
+        }
+
+        .table-premium th:first-child,
+        .table-premium td:first-child {
+            text-align: left;
+        }
+
+        .table-premium th {
+            background: #0f1524;
+            color: #c9d6ff;
+        }
+
+        .compta-total {
+            font-weight: bold;
+            color: #4da3ff;
+            margin-top: 8px;
+        }
+
+        .success { color: #4ade80; }
+        .error { color: #f97373; }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>SmartSecrétaire</h1>
+        <nav>
+            <a data-page="home">Accueil</a>
+            <a data-page="compta">SmartCompta</a>
+            <a data-page="secretaire">SmartSecrétaire</a>
+            <a data-page="planning">SmartPlanning</a>
+            <a data-page="documents">SmartDocuments</a>
+            <a data-page="relances">SmartRelances</a>
+        </nav>
+    </header>
+
+    <!-- ACCUEIL -->
+    <section id="home" class="page active">
+        <div class="hero">
+            <h2>Votre Assistante Intelligente</h2>
+            <p>Gérez votre comptabilité, vos documents, vos relances et votre organisation en un seul endroit.</p>
+            <a class="btn" data-page="compta">Accéder aux modules</a>
+        </div>
+
+        <div class="modules">
+            <div class="card" data-page="compta">
+                <h3>SmartCompta</h3>
+                <p>Calculs automatiques, tableaux, gestion simplifiée.</p>
+            </div>
+
+            <div class="card" data-page="secretaire">
+                <h3>SmartSecrétaire</h3>
+                <p>Modèles, rédaction, organisation administrative.</p>
+            </div>
+
+            <div class="card" data-page="planning">
+                <h3>SmartPlanning</h3>
+                <p>Planification intelligente et automatisée.</p>
+            </div>
+
+            <div class="card" data-page="documents">
+                <h3>SmartDocuments</h3>
+                <p>Création et gestion de documents.</p>
+            </div>
+
+            <div class="card" data-page="relances">
+                <h3>SmartRelances</h3>
+                <p>Relances automatiques et modèles professionnels.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMARTCOMPTA PREMIUM -->
+    <section id="compta" class="page">
+        <h2>SmartCompta</h2>
+        <p class="section-subtitle">Analyse automatique, journal, balance, TVA et trésorerie.</p>
+
+        <div class="compta-grid">
+
+            <div class="compta-card">
+                <h3>Saisir une opération</h3>
+                <p>Décrivez une opération (achat, vente, montant, etc.).</p>
+                <textarea id="comptaInput" placeholder="Ex : Achat de fournitures pour 120 € payé par banque."></textarea>
+                <button id="comptaSubmit" class="btn">Analyser et proposer une écriture</button>
+                <div id="validationView" class="compta-section"></div>
+            </div>
+
+            <div class="compta-card">
+                <h3>Journal comptable</h3>
+                <div id="journalView" class="compta-section"></div>
+            </div>
+
+            <div class="compta-card">
+                <h3>Grand journal</h3>
+                <div id="grandJournalView" class="compta-section"></div>
+            </div>
+
+            <div class="compta-card">
+                <h3>Balance</h3>
+                <div id="balanceView" class="compta-section"></div>
+            </div>
+
+            <div class="compta-card">
+                <h3>TVA</h3>
+                <div id="tvaView" class="compta-section"></div>
+            </div>
+
+            <div class="compta-card">
+                <h3>Trésorerie</h3>
+                <div id="tresorerieView" class="compta-section"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- AUTRES MODULES -->
+    <section id="secretaire" class="page">
+        <h2>SmartSecrétaire</h2>
+        <p>Module secrétariat en préparation…</p>
+    </section>
+
+    <section id="planning" class="page">
+        <h2>SmartPlanning</h2>
+        <p>Module planning en préparation…</p>
+    </section>
+
+    <section id="documents" class="page">
+        <h2>SmartDocuments</h2>
+        <p>Module documents en préparation…</p>
+    </section>
+
+    <section id="relances" class="page">
+        <h2>SmartRelances</h2>
+        <p>Module relances en préparation…</p>
+    </section>
+
+    <!-- SCRIPTS -->
     <script src="script.js"></script>
     <script src="compta.js"></script>
-   
 
     <script>
-        // Navigation simple
-        const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
+        const links = document.querySelectorAll("nav a, .card, .btn");
         const pages = document.querySelectorAll(".page");
 
         links.forEach(link => {
@@ -19,10 +328,12 @@
                 if (!target) return;
 
                 pages.forEach(p => p.classList.remove("active"));
-                const page = document.getElementById(target);
-                if (page) page.classList.add("active");
+                document.getElementById(target).classList.add("active");
 
                 window.scrollTo(0, 0);
             });
         });
     </script>
+
+</body>
+</html>
