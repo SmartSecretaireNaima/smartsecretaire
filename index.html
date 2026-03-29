@@ -23,6 +23,9 @@
                 <li><a href="#" data-page="premium">Premium</a></li>
                 <li><a href="#" data-page="entreprise">Entreprise</a></li>
                 <li><a href="#" data-page="contact">Contact</a></li>
+
+                <!-- ⭐ AJOUT DU BOUTON COMPTABILITÉ -->
+                <li><a href="#" data-page="compta">Comptabilité</a></li>
             </ul>
         </nav>
 
@@ -54,52 +57,7 @@
         <textarea id="userInput" placeholder="Écrivez votre demande ici..."></textarea>
         <button id="send">Générer</button>
 
-        <!-- Zone d’affichage principale -->
         <section id="output"></section>
-
-        <!-- ============================
-             MODULES COMPTABLES
-        ============================= -->
-
-        <div class="module-container">
-
-            <!-- JOURNAL INTELLIGENT -->
-            <div class="module-box">
-                <h3>Journal intelligent</h3>
-                <div id="journalView"></div>
-            </div>
-
-            <!-- VALIDATION -->
-            <div class="module-box">
-                <h3>Validation</h3>
-                <div id="validationView"></div>
-            </div>
-
-            <!-- GRAND JOURNAL -->
-            <div class="module-box">
-                <h3>Grand Journal</h3>
-                <div id="grandJournalView"></div>
-            </div>
-
-            <!-- BALANCE -->
-            <div class="module-box">
-                <h3>Balance</h3>
-                <div id="balanceView"></div>
-            </div>
-
-            <!-- TVA -->
-            <div class="module-box">
-                <h3>TVA</h3>
-                <div id="tvaView"></div>
-            </div>
-
-            <!-- TRÉSORERIE -->
-            <div class="module-box">
-                <h3>Trésorerie</h3>
-                <div id="tresorerieView"></div>
-            </div>
-
-        </div>
     </section>
 
 
@@ -172,6 +130,26 @@
 
 
     <!-- ============================
+         ⭐ PAGE COMPTABILITÉ (NOUVELLE)
+    ============================= -->
+    <section id="compta" class="page">
+        <h2 class="section-title">SmartCompta</h2>
+        <p class="section-subtitle">Votre comptabilité intelligente intégrée à SmartSecrétaire</p>
+
+        <div id="validationView"></div>
+        <div id="journalView"></div>
+        <div id="grandJournalView"></div>
+        <div id="balanceView"></div>
+        <div id="tvaView"></div>
+        <div id="tresorerieView"></div>
+        <div id="bilanView"></div>
+        <div id="resultatView"></div>
+        <div id="relancesView"></div>
+        <div id="rechercheView"></div>
+    </section>
+
+
+    <!-- ============================
          FOOTER PREMIUM
     ============================= -->
     <footer class="footer">
@@ -196,8 +174,11 @@
     <!-- ============================
          SCRIPTS
     ============================= -->
-   <script src="compta.js"></script>
- <script src="script2.js?v=4"></script>
+    <script src="script.js"></script>
+
+    <!-- ⭐ AJOUT : moteur comptable -->
+    <script src="compta.js"></script>
+    <script src="script2.js"></script>
 
     <script>
         // Navigation simple
