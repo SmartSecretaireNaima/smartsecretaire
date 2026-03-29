@@ -792,6 +792,36 @@ function afficherRecherche(resultats) {
     }
 
     let html = `
+    // =========================
+// MODULE FINAL — ROUTEUR COMPTABLE
+// =========================
+
+function comptaRouter(demande) {
+    if (!demande || demande.trim() === "") {
+        return "Je n’ai pas compris votre demande comptable.";
+    }
+
+    const info = analyserOperation(demande);
+
+    if (!info.type || !info.montant) {
+        return "Je n’ai pas pu détecter le type d’opération ou le montant.";
+    }
+
+    const ecriture = genererEcriture(info);
+
+    if (!ecriture) {
+        return "Impossible de générer l’écriture comptable.";
+    }
+
+    afficherValidation(ecriture);
+
+    return `
+        J’ai détecté une opération de type **${info.type}** 
+        pour un montant de **${info.montant} € TTC**.
+        L’écriture comptable est prête à être validée.
+    `;
+}
+
         <h3>Résultats de recherche</h3>
         <table class="table-premium">
             <tr>
