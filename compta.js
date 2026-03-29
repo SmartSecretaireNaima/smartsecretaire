@@ -801,36 +801,26 @@ function comptaRouter(demande) {
         return "Je n’ai pas compris votre demande comptable.";
     }
 
-    const info = analyserOperation(demande);
+  const info = analyserOperation(demande);
 
-    if (!info.type || !info.montant) {
-        return "Je n’ai pas pu détecter le type d’opération ou le montant.";
-    }
-
-    const ecriture = genererEcriture(info);
-
-    if (!ecriture) {
-        return "Impossible de générer l’écriture comptable.";
-    }
-
-    afficherValidation(ecriture);
-
-    return `
-        J’ai détecté une opération de type **${info.type}** 
-        pour un montant de **${info.montant} € TTC**.
-        L’écriture comptable est prête à être validée.
-    `;
+if (!info.type || !info.montant) {
+    return "Je n’ai pas pu détecter le type d’opération ou le montant.";
 }
 
-        <h3>Résultats de recherche</h3>
-        <table class="table-premium">
-            <tr>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Montant</th>
-            </tr>
-    `;
+const ecriture = genererEcriture(info);
+
+if (!ecriture) {
+    return "Impossible de générer l’écriture comptable.";
+}
+
+afficherValidation(ecriture);
+
+return `
+    J’ai détecté une opération de type **${info.type}** 
+    pour un montant de **${info.montant} € TTC**.
+    L’écriture comptable est prête à être validée.
+`;
+}
 
     resultats.forEach(e => {
         html += `
