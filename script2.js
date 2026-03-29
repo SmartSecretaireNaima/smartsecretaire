@@ -1,5 +1,5 @@
 // ======================================================
-//  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL OPTIMISÉ
+//  SMARTSECRÉTAIRE — SCRIPT2.JS PREMIUM FINAL + COMPTA
 // ======================================================
 
 
@@ -11,28 +11,32 @@ const sendBtn = document.getElementById("send");
 const output = document.getElementById("output");
 const loader = document.getElementById("loader");
 
-sendBtn.addEventListener("click", () => {
-    const demande = input.value.trim();
-    if (demande === "") {
-        output.innerHTML = "<p>Merci d'écrire une demande.</p>";
-        return;
-    }
+if (sendBtn) {
+    sendBtn.addEventListener("click", () => {
+        const demande = input.value.trim();
+        if (demande === "") {
+            output.innerHTML = "<p>Merci d'écrire une demande.</p>";
+            return;
+        }
 
-    loader.classList.remove("hidden");
+        loader.classList.remove("hidden");
 
-    setTimeout(() => {
-        const resultat = moteurInterne(demande);
-        output.innerHTML = `
-            <div class="document-box fade-in">
-                ${resultat}
-            </div>
-        `;
-        loader.classList.add("hidden");
-    }, 1200);
-});
+        setTimeout(() => {
+            const resultat = moteurInterne(demande);
+            output.innerHTML = `
+                <div class="document-box fade-in">
+                    ${resultat}
+                </div>
+            `;
+            loader.classList.add("hidden");
+        }, 1200);
+    });
+}
 
 
-// Mode sombre
+// ------------------------------------------------------
+// MODE SOMBRE
+// ------------------------------------------------------
 const darkBtn = document.getElementById("darkMode");
 if (darkBtn) {
     darkBtn.addEventListener("click", () => {
@@ -42,7 +46,29 @@ if (darkBtn) {
 
 
 // ------------------------------------------------------
-// 2) ANALYSE DE LA DEMANDE (nom, montant, date)
+// 2) NAVIGATION ENTRE LES PAGES (AVEC COMPTABILITÉ)
+// ------------------------------------------------------
+const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
+const pages = document.querySelectorAll(".page");
+
+links.forEach(link => {
+    link.addEventListener("click", () => {
+        const target = link.getAttribute("data-page");
+
+        if (!target) return;
+
+        pages.forEach(p => p.classList.remove("active"));
+
+        const page = document.getElementById(target);
+        if (page) page.classList.add("active");
+
+        window.scrollTo(0, 0);
+    });
+});
+
+
+// ------------------------------------------------------
+// 3) ANALYSE DE LA DEMANDE (nom, montant, date)
 // ------------------------------------------------------
 function analyserDemande(texte) {
     const info = { client: null, montant: null, date: null };
@@ -67,7 +93,7 @@ function analyserDemande(texte) {
 
 
 // ------------------------------------------------------
-// 3) MODÈLES SIMPLES
+// 4) MODÈLES SIMPLES
 // ------------------------------------------------------
 function modeleDevis() {
     return `
@@ -101,57 +127,17 @@ function modeleExcel() {
     `;
 }
 
-
-// ------------------------------------------------------
-// 4) MARCO SIMPLE — VERSION AMÉLIORÉE
-// ------------------------------------------------------
-function modeleMARCO(demande) {
-
-    const M = `Bonjour, je vous contacte concernant ${demande}.`;
-    const A = `Je souhaite vous informer de la situation actuelle.`;
-    const R = `Un imprévu nécessite un léger ajustement.`;
-    const C = `Le délai initial pourrait être modifié.`;
-    const O = `Je reste disponible pour toute précision.`;
-
+function modeleMARCO() {
     return `
         <span class="badge-premium">MARCO</span>
-        <h2 class="section-title">Message professionnel</h2>
-
-        <p>${M}</p>
-        <p>${A}</p>
-        <p>${R}</p>
-        <p>${C}</p>
-        <p>${O}</p>
+        <h2 class="section-title">Message MARCO</h2>
+        <p>Message structuré selon la méthode MARCO.</p>
     `;
 }
 
 
 // ------------------------------------------------------
-// 5) MARCO AVANCÉ — VERSION PROFESSIONNELLE
-// ------------------------------------------------------
-function modeleMARCOAvance(demande) {
-
-    const M = `Bonjour, je vous contacte concernant ${demande}.`;
-    const A = `Je souhaite vous informer de l’évolution précise de la situation.`;
-    const R = `Un élément imprévu a nécessité une réorganisation interne.`;
-    const C = `Le délai initial doit être ajusté afin de garantir un travail fiable et complet.`;
-    const O = `Je reste disponible pour échanger ou convenir d’un nouvel arrangement.`;
-
-    return `
-        <span class="badge-premium">MARCO Avancé</span>
-        <h2 class="section-title">Message professionnel</h2>
-
-        <p>${M}</p>
-        <p>${A}</p>
-        <p>${R}</p>
-        <p>${C}</p>
-        <p>${O}</p>
-    `;
-}
-
-
-// ------------------------------------------------------
-// 6) AUTRES FONCTIONS PREMIUM
+// 5) FONCTIONS PREMIUM
 // ------------------------------------------------------
 function modeleWordPremium() {
     return `
@@ -169,9 +155,17 @@ function tableauExcelAvance() {
     `;
 }
 
+function messageMARCOAvance() {
+    return `
+        <span class="badge-premium">MARCO Avancé</span>
+        <h2 class="section-title">Message MARCO Avancé</h2>
+        <p>Message professionnel structuré selon la méthode MARCO avancée.</p>
+    `;
+}
+
 
 // ------------------------------------------------------
-// 7) MODÈLES PREMIUM INTELLIGENTS
+// 6) MODÈLES PREMIUM INTELLIGENTS
 // ------------------------------------------------------
 function modeleDevisPremiumIntelligent(demande) {
     const info = analyserDemande(demande);
@@ -200,9 +194,35 @@ function modeleDevisPremiumIntelligent(demande) {
     `;
 }
 
+function modeleFacturePremiumIntelligent(demande) {
+    const info = analyserDemande(demande);
+    const client = info.client || "Nom du client";
+    const ht = info.montant || 200;
+    const tva = Math.round(ht * 0.20 * 100) / 100;
+    const ttc = Math.round((ht + tva) * 100) / 100;
+
+    return `
+        <span class="badge-premium">Facture Premium</span>
+        <h2 class="section-title">Facture Premium</h2>
+
+        <p><strong>Client :</strong> ${client}</p>
+        <p><strong>Date :</strong> ${new Date().toLocaleDateString()}</p>
+
+        <table class="table-premium">
+            <tr><th>Service</th><th>Montant</th></tr>
+            <tr><td>Service A</td><td>${Math.round(ht * 0.6)} €</td></tr>
+            <tr><td>Service B</td><td>${Math.round(ht * 0.4)} €</td></tr>
+        </table>
+
+        <p class="compta-total">Total HT : ${ht} €</p>
+        <p>TVA (20%) : ${tva} €</p>
+        <p class="compta-total">Total TTC : ${ttc} €</p>
+    `;
+}
+
 
 // ------------------------------------------------------
-// 8) RAPPORT PREMIUM
+// 7) RAPPORT PREMIUM
 // ------------------------------------------------------
 function modeleRapportPremium() {
     return `
@@ -229,7 +249,7 @@ function modeleRapportPremium() {
 
 
 // ------------------------------------------------------
-// 9) EXCEL PREMIUM
+// 8) EXCEL PREMIUM
 // ------------------------------------------------------
 function modeleExcelPremium() {
     return `
@@ -250,7 +270,7 @@ Total général : =SOMME(D2:D4)
 
 
 // ------------------------------------------------------
-// 10) CALCUL COMPTABLE PREMIUM
+// 9) CALCUL COMPTABLE PREMIUM
 // ------------------------------------------------------
 function calculComptableAuto(demande) {
     const info = analyserDemande(demande);
@@ -272,7 +292,7 @@ function calculComptableAuto(demande) {
 
 
 // ------------------------------------------------------
-// 11) VERSION ENTREPRISE
+// 10) VERSION ENTREPRISE
 // ------------------------------------------------------
 function versionEntreprise() {
     return `
@@ -293,7 +313,7 @@ function versionEntreprise() {
 
 
 // ------------------------------------------------------
-// 12) MOTEUR INTERNE FINAL (CORRIGÉ AVEC COMPTABILITÉ)
+// 11) MOTEUR INTERNE FINAL
 // ------------------------------------------------------
 function moteurInterne(demande) {
     const d = demande.toLowerCase();
@@ -302,7 +322,7 @@ function moteurInterne(demande) {
 
     if (d.includes("word premium")) return modeleWordPremium();
     if (d.includes("excel avancé")) return tableauExcelAvance();
-    if (d.includes("marco avancé")) return modeleMARCOAvance(demande);
+    if (d.includes("marco avancé")) return messageMARCOAvance();
 
     if (d.includes("devis premium")) return modeleDevisPremiumIntelligent(demande);
     if (d.includes("facture premium")) return modeleFacturePremiumIntelligent(demande);
@@ -314,19 +334,8 @@ function moteurInterne(demande) {
     if (d.includes("compte rendu")) return modeleCompteRendu();
     if (d.includes("excel") || d.includes("tableau")) return modeleExcel();
 
-    if (d.includes("marco")) return modeleMARCO(demande);
+    if (d.includes("marco")) return modeleMARCO();
 
-    // ------------------------------------------------------
-    // 🔥 COMPTABILITÉ — APPEL AU MOTEUR COMPTABLE
-    // ------------------------------------------------------
-    if (typeof comptaRouter === "function") {
-        const compta = comptaRouter(demande);
-        if (compta) return compta;
-    }
-
-    // ------------------------------------------------------
-    // RÉPONSE PAR DÉFAUT
-    // ------------------------------------------------------
     return `
         <h2 class="section-title">Réponse automatique</h2>
         <p>Voici une réponse simple à votre demande :</p>
