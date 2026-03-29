@@ -178,19 +178,22 @@ function analyserOperation(demande) {
     // 🔍 DÉTECTION TYPE D’OPÉRATION
     // -----------------------------
 
-    // ACHAT
-    if (
-        d.includes("achat") ||
-        d.includes("acheté") ||
-        d.includes("achete") ||
-        d.includes("payer") ||
-        d.includes("payé") ||
-        d.includes("materiel") ||
-        d.includes("matériel") ||
-        d.includes("facture fournisseur")
-    ) {
-        info.type = "achat";
-    }
+   // ACHAT
+if (
+    d.includes("achat") ||
+    d.includes("acheté") ||
+    d.includes("achete") ||
+    d.includes("j'ai acheté") ||
+    d.includes("j’ai acheté") ||   // apostrophe typographique
+    d.includes("payer") ||
+    d.includes("payé") ||
+    d.includes("materiel") ||
+    d.includes("matériel") ||
+    d.includes("facture fournisseur")
+) {
+    info.type = "achat";
+}
+
 
     // VENTE
     if (
