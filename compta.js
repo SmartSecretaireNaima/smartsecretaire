@@ -174,16 +174,38 @@ function analyserOperation(demande) {
         date: todayISO()
     };
 
-    // Détection achat / vente
-    if (d.includes("achat")) info.type = "achat";
-    if (d.includes("payer")) info.type = "achat";
-    if (d.includes("facture fournisseur")) info.type = "achat";
+    // -----------------------------
+    // 🔍 DÉTECTION TYPE D’OPÉRATION
+    // -----------------------------
 
-    if (d.includes("vente")) info.type = "vente";
-    if (d.includes("facture client")) info.type = "vente";
-    if (d.includes("encaissement")) info.type = "vente";
+    // ACHAT
+    if (
+        d.includes("achat") ||
+        d.includes("acheté") ||
+        d.includes("achete") ||
+        d.includes("payer") ||
+        d.includes("payé") ||
+        d.includes("materiel") ||
+        d.includes("matériel") ||
+        d.includes("facture fournisseur")
+    ) {
+        info.type = "achat";
+    }
 
-    // Détection montant
+    // VENTE
+    if (
+        d.includes("vente") ||
+        d.includes("vendu") ||
+        d.includes("prestation") ||
+        d.includes("facture client") ||
+        d.includes("encaissement")
+    ) {
+        info.type = "vente";
+    }
+
+    // -----------------------------
+    // 🔍 DÉTECTION MONTANT
+    // -----------------------------
     const montantMatch = d.match(/(\d+[.,]?\d*)/);
     if (montantMatch) {
         info.montant = parseFloat(montantMatch[1].replace(",", "."));
@@ -191,6 +213,7 @@ function analyserOperation(demande) {
 
     return info;
 }
+
 
 
 
