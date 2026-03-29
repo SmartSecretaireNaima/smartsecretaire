@@ -786,9 +786,27 @@ function rechercheComptable(texte) {
 function afficherRecherche(resultats) {
     if (resultats.length === 0) {
         return `
-            <h3>Recherche</h3>
-            <p>Aucun résultat trouvé.</p>
-        `;
+         const info = analyserOperation(demande);
+
+if (!info.type || !info.montant) {
+    return "Je n’ai pas pu détecter le type d’opération ou le montant.";
+}
+
+const ecriture = genererEcriture(info);
+
+if (!ecriture) {
+    return "Impossible de générer l’écriture comptable.";
+}
+
+afficherValidation(ecriture);
+
+return `
+    J’ai détecté une opération de type **${info.type}** 
+    pour un montant de **${info.montant} € TTC**.
+    L’écriture comptable est prête à être validée.
+`;
+}
+
     }
 
     let html = `
