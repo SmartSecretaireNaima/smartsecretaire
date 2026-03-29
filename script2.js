@@ -28,7 +28,12 @@ function moteurInterne(demande) {
     }
 
     return `
-        <h2 class="section-title">Réponse automatique</h2>
+       // --- COMPTABILITÉ ---
+if (typeof comptaRouter === "function") {
+    const compta = comptaRouter(demande);
+    if (compta) return compta;
+}
+ <h2 class="section-title">Réponse automatique</h2>
         <p>Voici une réponse simple à votre demande :</p>
         <p>${demande}</p>
     `;
