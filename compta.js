@@ -615,182 +615,41 @@ mettreAJourCompta = function() {
 
 
 // =========================
-// FIN MODULE 4 — TVA COMPLETE
+// MODULE FINAL — ROUTEUR COMPTABLE
 // =========================
 //
-// =========================
-// MODULE 5 — TRÉSORERIE + BILAN + COMPTE DE RÉSULTAT
-// =========================
-//
-// Ce module gère :
-// ✔ Trésorerie (banque / caisse)
-// ✔ Bilan (actif / passif)
-// ✔ Compte de résultat (charges / produits)
-// ✔ Mise à jour automatique après chaque écriture
+// Ce module connecte ton assistant (script2.js)
+// avec tout le moteur comptable SmartCompta.
 // ------------------------------------------------------
 
+function comptaRouter(demande) {
+    if (!demande || demande.trim() === "") {
+        return "Je n’ai pas compris votre demande comptable.";
+    }
 
+    // 1) Analyse de la demande
+    const info = analyserOperation(demande);
 
-// ------------------------------------------------------
-// 1) CALCUL TRÉSORERIE
-// ------------------------------------------------------
-function calculerTresorerie() {
-    let banque = 0;
-    let caisse = 0;
+    if (!info.type || !info.montant) {
+        return "Je n’ai pas pu détecter le type d’opération ou le montant.";
+    }
 
-    SmartCompta.journalEntries.forEach(ecriture => {
-        ecriture.lignes.forEach(ligne => {
+    // 2) Génération de l’écriture
+    const ecriture = genererEcriture(info);
 
-            // Banque (512)
-            if (ligne.compte === "512") {
-                if (ligne.sens === "D") banque += ligne.montant;
-                if (ligne.sens === "C") banque -= ligne.montant;
-            }
+    if (!ecriture) {
+        return "Impossible de générer l’écriture comptable.";
+    }
 
-            // Caisse (53)
-            if (ligne.compte === "53") {
-                if (ligne.sens === "D") caisse += ligne.montant;
-                if (ligne.sens === "C") caisse -= ligne.montant;
-            }
-        });
-    });
+    // 3) Affichage pour validation
+    afficherValidation(ecriture);
 
-    SmartCompta.tresorerie = { banque, caisse };
-    afficherTresorerie();
-}
-
-
-
-// ------------------------------------------------------
-// 2) AFFICHAGE TRÉSORERIE
-// ------------------------------------------------------
-function afficherTresorerie() {
-    if (!tresorerieView) return;
-
-    const t = SmartCompta.tresorerie;
-
-    let html = `
-        <h3>Trésorerie</h3>
-
-        <table class="table-premium">
-            <tr><th>Compte</th><th>Solde</th></tr>
-            <tr><td>Banque (512)</td><td>${formatEuro(t.banque)}</td></tr>
-            <tr><td>Caisse (53)</td><td>${formatEuro(t.caisse)}</td></tr>
-        </table>
-
-        <p><strong>Trésorerie totale :</strong> ${formatEuro(t.banque + t.caisse)}</p>
+    // 4) Retour texte pour l’assistant
+    return `
+        J’ai détecté une opération de type **${info.type}** 
+        pour un montant de **${info.montant} € TTC**.
+        L’écriture comptable est prête à être validée.
     `;
-
-    safeSetHTML(tresorerieView, html);
-}
-
-
-
-// ------------------------------------------------------
-// 3) CALCUL BILAN (ACTIF / PASSIF)
-// ------------------------------------------------------
-function calculerBilan() {
-    const actif = {};
-    const passif = {};
-
-    SmartCompta.journalEntries.forEach(ecriture => {
-        ecriture.lignes.forEach(ligne => {
-            const compte = ligne.compte;
-
-            // ACTIF (classe 2, 3, 5)
-            if (/^(2|3|5)/.test(compte)) {
-                if (!actif[compte]) actif[compte] = 0;
-                actif[compte] += (ligne.sens === "D" ? ligne.montant : -ligne.montant);
-            }
-
-            // PASSIF (classe 1, 4)
-            if (/^(1|4)/.test(compte)) {
-                if (!passif[compte]) passif[compte] = 0;
-                passif[compte] += (ligne.sens === "C" ? ligne.montant : -ligne.montant);
-            }
-        });
-    });
-
-    SmartCompta.bilan = { actif, passif };
-}
-
-
-
-// ------------------------------------------------------
-// 4) CALCUL COMPTE DE RÉSULTAT (CHARGES / PRODUITS)
-// ------------------------------------------------------
-function calculerResultat() {
-    let charges = 0;
-    let produits = 0;
-
-    SmartCompta.journalEntries.forEach(ecriture => {
-        ecriture.lignes.forEach(ligne => {
-
-            // Charges (classe 6)
-            if (/^6/.test(ligne.compte)) {
-                if (ligne.sens === "D") charges += ligne.montant;
-                if (ligne.sens === "C") charges -= ligne.montant;
-            }
-
-            // Produits (classe 7)
-            if (/^7/.test(ligne.compte)) {
-                if (ligne.sens === "C") produits += ligne.montant;
-                if (ligne.sens === "D") produits -= ligne.montant;
-            }
-        });
-    });
-
-    SmartCompta.resultat = {
-        charges,
-        produits,
-        resultat: produits - charges
-    };
-}
-
-
-
-// ------------------------------------------------------
-// 5) AFFICHAGE BILAN + RÉSULTAT
-// ------------------------------------------------------
-function afficherBilanEtResultat() {
-    const b = SmartCompta.bilan;
-    const r = SmartCompta.resultat;
-
-    let html = `
-        <h3>Bilan Comptable</h3>
-
-        <h4>Actif</h4>
-        <table class="table-premium">
-            <tr><th>Compte</th><th>Solde</th></tr>
-    `;
-
-    Object.keys(b.actif).forEach(c => {
-        html += `<tr><td>${c}</td><td>${formatEuro(b.actif[c])}</td></tr>`;
-    });
-
-    html += `
-        </table>
-
-        <h4>Passif</h4>
-        <table class="table-premium">
-            <tr><th>Compte</th><th>Solde</th></tr>
-    `;
-
-    Object.keys(b.passif).forEach(c => {
-        html += `<tr><td>${c}</td><td>${formatEuro(b.passif[c])}</td></tr>`;
-    });
-
-    html += `
-        </table>
-
-        <h3>Compte de Résultat</h3>
-        <p><strong>Total Charges :</strong> ${formatEuro(r.charges)}</p>
-        <p><strong>Total Produits :</strong> ${formatEuro(r.produits)}</p>
-        <p><strong>Résultat :</strong> <span style="color:${r.resultat >= 0 ? 'green' : 'red'}">${formatEuro(r.resultat)}</span></p>
-    `;
-
-    // On affiche dans la zone TVA (ou une autre si tu veux)
-    safeSetHTML(tvaView, safeGetHTML(tvaView) + html);
 }
 
 
