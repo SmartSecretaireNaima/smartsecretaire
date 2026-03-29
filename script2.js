@@ -2,10 +2,10 @@
 //  SMARTSECRÉTAIRE — SCRIPT2.JS PREMIUM FINAL + COMPTA
 // ======================================================
 
-// ------------------------------------------------------
-// 1) CONNEXION INTERFACE → MOTEUR
-// ------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
+    // ------------------------------------------------------
+    // 1) CONNEXION INTERFACE → MOTEUR
+    // ------------------------------------------------------
     const input = document.getElementById("userInput");
     const sendBtn = document.getElementById("send");
     const output = document.getElementById("output");
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sendBtn && input && output) {
         sendBtn.addEventListener("click", () => {
             const demande = input.value.trim();
-            if (demande === "") {
+            if (!demande) {
                 output.innerHTML = "<p>Merci d'écrire une demande.</p>";
                 return;
             }
