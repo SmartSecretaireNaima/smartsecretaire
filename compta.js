@@ -822,17 +822,6 @@ return `
 `;
 }
 
-    resultats.forEach(e => {
-        html += `
-            <tr>
-                <td>${e.id}</td>
-                <td>${e.date}</td>
-                <td>${e.type}</td>
-                <td>${formatEuro(e.montant)}</td>
-            </tr>
-        `;
-    });
-
     html += `</table>`;
 
     return html;
