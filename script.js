@@ -1,4 +1,4 @@
-(Version premium + Comptabilité intégrée)
+// Version premium + Comptabilité intégrée
 // ======================================================
 //  SMARTSECRÉTAIRE — SCRIPT.JS PREMIUM FINAL + COMPTA
 // ======================================================
@@ -11,6 +11,7 @@ const input = document.getElementById("userInput");
 const sendBtn = document.getElementById("send");
 const output = document.getElementById("output");
 const loader = document.getElementById("loader");
+
 
 if (sendBtn) {
     sendBtn.addEventListener("click", () => {
