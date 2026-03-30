@@ -50,7 +50,7 @@ if (darkBtn) {
 // ------------------------------------------------------
 // 2) NAVIGATION ENTRE LES PAGES (AJOUT COMPTABILITÉ)
 // ------------------------------------------------------
-const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
+let links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
 const pages = document.querySelectorAll(".page");
 
 links.forEach(link => {
