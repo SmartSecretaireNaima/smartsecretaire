@@ -318,11 +318,12 @@
     <script src="script.js"></script>
     <script src="compta.js"></script>
 
-   const links = document.querySelectorAll("nav a, .card, .btn");
+   <script>
+
 
         let links = document.querySelectorAll("nav a, .card, .btn");
+const pages = document.querySelectorAll(".page");
 
-        const pages = document.querySelectorAll(".page");
 
         links.forEach(link => {
             link.addEventListener("click", () => {
