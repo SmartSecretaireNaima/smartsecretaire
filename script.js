@@ -48,7 +48,7 @@ if (darkBtn) {
 
 
 // ------------------------------------------------------
-// 2) NAVIGATION ENTRE LES PAGES (AJOUT COMPTABILITÉ)
+// 2) NAVIGATION ENTRE LES PAGES (INTERNE)
 // ------------------------------------------------------
 
 const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
@@ -57,17 +57,13 @@ const pages = document.querySelectorAll(".page");
 links.forEach(link => {
     link.addEventListener("click", () => {
         const target = link.getAttribute("data-page");
-
         if (!target) return;
 
-        // Masquer toutes les pages
         pages.forEach(p => p.classList.remove("active"));
 
-        // Afficher la page ciblée
         const page = document.getElementById(target);
         if (page) page.classList.add("active");
 
-        // Remonter en haut de la page
         window.scrollTo(0, 0);
     });
 });
