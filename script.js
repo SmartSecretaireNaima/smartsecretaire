@@ -51,6 +51,7 @@ if (darkBtn) {
 // 2) NAVIGATION ENTRE LES PAGES (AJOUT COMPTABILITÉ)
 // ------------------------------------------------------
 
+const links = document.querySelectorAll("nav a, .home-btn, .footer-links a");
 const pages = document.querySelectorAll(".page");
 
 links.forEach(link => {
@@ -59,11 +60,14 @@ links.forEach(link => {
 
         if (!target) return;
 
+        // Masquer toutes les pages
         pages.forEach(p => p.classList.remove("active"));
 
+        // Afficher la page ciblée
         const page = document.getElementById(target);
         if (page) page.classList.add("active");
 
+        // Remonter en haut de la page
         window.scrollTo(0, 0);
     });
 });
